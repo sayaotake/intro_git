@@ -1,8 +1,14 @@
 name: release-settings-test
 on: [workflow_dispatch]
-
+inputs:
+        date:
+            description: 'Enter the date in YYYYMMDD format'
+            required: true
+            default: '20240521'
 jobs:
-    check-date-number:
-        runs-on: ubuntu-latest
-        steps:
-            - run: git branch release-settings
+    create_branch:
+    runs-on: ubuntu-latest
+    steps:
+            - name: Create new branch
+            run: new_branch="release_settings${{ github.event.inputs.date }}"
+                
