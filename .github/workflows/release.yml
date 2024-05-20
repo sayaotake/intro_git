@@ -1,0 +1,8 @@
+name: release-settings-test
+on: [workflow_dispatch]
+
+jobs:
+    check-date-number:
+        runs-on: ubuntu-latest
+        steps:
+            - run: git branch release-settings
