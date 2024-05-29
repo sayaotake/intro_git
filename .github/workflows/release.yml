@@ -1,8 +1,24 @@
 name: setup-release-branches.yml
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Enter the date in YYYYMMDD format"
+        required: true
+        default: "20240521"
 
 jobs:
-  job_name1:
+  release-date_and_suffix:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello World!"
+      - name: release_date
+        run: echo "Hello World!"
+
+      - name: suffix
+        run: echo "Helloworld!2"
+
+  release-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create_release-branch
+        run: echo "Hello World!3"
