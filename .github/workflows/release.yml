@@ -1,8 +1,8 @@
-name: release-settings-test
+name: setup-release-branches.yml
 on: [workflow_dispatch]
 
 jobs:
-    check-date-number:
-        runs-on: ubuntu-latest
-        steps:
-            - run: git branch release-settings
+  job_name1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello World!"
