@@ -5,16 +5,17 @@ on:
       date:
         description: "リリース日とサフィックスを入力"
         required: true
-        default: "202405211a"
+        default: "20240530a"
 
 jobs:
   release-date_and_suffix:
     runs-on: ubuntu-latest
     env:
-      RELEASE_DATE: ${{ github.event.inputs.date }}
+      GITHUB_EVENT_RELEASE_DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
+      RELEASE_BRANCH_NAME: release/${{ inputs.date }}
     steps:
       - name: release_date_and_suffix
-        run: echo "入力値は$RELEASE_DATE"
+        run: echo "入力値は$RELEASE_BRANCH_NAME"
 
       - name: release_date
         run: echo "Hello World!"
@@ -26,7 +27,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: create_release-branch
-        run: echo "Hello World!3"
-
-      - name: create_release-branch
-        run: echo "Hello World!4"
+        run: git checkout -b $RELEASE_BRANCH_NAME
