@@ -3,14 +3,19 @@ on:
   workflow_dispatch:
     inputs:
       date:
-        description: "Enter the date in YYYYMMDD format"
+        description: "リリース日とサフィックスを入力"
         required: true
-        default: "20240521"
+        default: "202405211a"
 
 jobs:
   release-date_and_suffix:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_DATE: ${{ github.event.inputs.date }}
     steps:
+      - name: release_date_and_suffix
+        run: echo "入力値は$RELEASE_DATE"
+
       - name: release_date
         run: echo "Hello World!"
 
@@ -22,3 +27,6 @@ jobs:
     steps:
       - name: create_release-branch
         run: echo "Hello World!3"
+
+      - name: create_release-branch
+        run: echo "Hello World!4"
