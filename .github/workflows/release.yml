@@ -31,5 +31,3 @@ jobs:
 
       - name: create_release-branch
         run: git branch $RELEASE_BRANCH_NAME
-          git checkout $RELEASE_BRANCH_NAME
-          git push origin $RELEASE_BRANCH_NAME
