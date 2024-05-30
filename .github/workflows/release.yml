@@ -26,6 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: create_release-branch
+        env:
+          RELEASE-DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
         run: git branch release/$RELEASE-DATE_AND_SUFFIX
 
       - name: create_release-branch
