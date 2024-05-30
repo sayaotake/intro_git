@@ -34,3 +34,8 @@ jobs:
 
       - name: checkout_release-branch
         run: git checkout $RELEASE_BRANCH_NAME
+
+      - name: add_release-branch
+        run: git add $RELEASE_BRANCH_NAME
+          git commit $RELEASE_BRANCH_NAME -m "$RELEASE_BRANCH_NAME追加"
+          git push origin $RELEASE_BRANCH_NAME
