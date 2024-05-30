@@ -11,8 +11,7 @@ jobs:
   release-date_and_suffix:
     runs-on: ubuntu-latest
     env:
-      GITHUB_EVENT_RELEASE_DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
-      RELEASE_BRANCH_NAME: release/${{ inputs.date }}
+      RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}
     steps:
       - name: release_date_and_suffix
         run: echo "入力値は$RELEASE_BRANCH_NAME"
@@ -25,11 +24,11 @@ jobs:
 
   release-branch:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}
     steps:
       - uses: actions/checkout@v4
 
       - name: create_release-branch
-        run: git branch $RELEASE_BRANCH_NAME origin/master
-
-      - name: create_release-branch
-        run: git checkout $RELEASE_BRANCH_NAME
+        run: git checkout -b $RELEASE_BRANCH_NAME
+          git push origin $RELEASE_BRANCH_NAME
