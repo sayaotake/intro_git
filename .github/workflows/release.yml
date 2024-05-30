@@ -31,4 +31,6 @@ jobs:
 
       - name: create_release-branch
         run: git branch $RELEASE_BRANCH_NAME
-          git checkout $RELEASE_BRANCH_NAME
+
+      - name: checkout_release-branch
+        run: git checkout $RELEASE_BRANCH_NAME
