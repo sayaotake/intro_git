@@ -25,7 +25,7 @@ jobs:
   release-branch:
     runs-on: ubuntu-latest
     env:
-      RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - uses: actions/checkout@v4
 
@@ -34,9 +34,6 @@ jobs:
 
       - name: checkout_release-branch
         run: git checkout $RELEASE_BRANCH_NAME
-
-      - name: push_release-branch
-        run: git pull
 
       - name: push_release-branch
         run: git push origin $RELEASE_BRANCH_NAME
