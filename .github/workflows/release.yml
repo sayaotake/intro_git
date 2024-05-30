@@ -36,4 +36,7 @@ jobs:
         run: git checkout $RELEASE_BRANCH_NAME
 
       - name: push_release-branch
+        run: git pull
+
+      - name: push_release-branch
         run: git push origin $RELEASE_BRANCH_NAME
