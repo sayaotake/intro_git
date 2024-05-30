@@ -11,11 +11,11 @@ jobs:
   release-date_and_suffix:
     runs-on: ubuntu-latest
     env:
-      GITHUB_EVENT_RELEASE-DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
-      RELEASE-DATE_AND_SUFFIX: ${{ inputs.date }}
+      GITHUB_EVENT_RELEASE_DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
+      RELEASE_DATE_AND_SUFFIX: ${{ inputs.date }}
     steps:
       - name: release_date_and_suffix
-        run: echo "入力値は$RELEASE-DATE_AND_SUFFIX"
+        run: echo "入力値は$RELEASE_DATE_AND_SUFFIX"
 
       - name: release_date
         run: echo "Hello World!"
