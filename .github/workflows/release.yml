@@ -37,5 +37,5 @@ jobs:
 
       - name: add_release-branch
         run: git add $RELEASE_BRANCH_NAME
-          git commit $RELEASE_BRANCH_NAME -m "$RELEASE_BRANCH_NAME追加"
+          git commit $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
