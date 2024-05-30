@@ -27,7 +27,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: create_release-branch
-        run: echo "Helloworld!2"
-
-      - name: create_release-branch
-        run: echo "Helloworld!2"
+        run: git checkout -b release/$RELEASE_DATE_AND_SUFFIX origin/master
