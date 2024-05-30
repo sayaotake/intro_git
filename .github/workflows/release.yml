@@ -5,7 +5,7 @@ on:
       date:
         description: "リリース日とサフィックスを入力"
         required: true
-        default: "202405211a"
+        default: "20240521a"
 
 jobs:
   release-date_and_suffix:
