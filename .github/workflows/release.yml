@@ -26,7 +26,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: create_release-branch
-        run: $RELEASE_BRANCH_NAME = "release/$RELEASE-DATE_AND_SUFFIX"
-
-      - name: create_release-branch
-        run: git checkout -b $RELEASE_BRANCH_NAME origin/main
+        run: git checkout -b release/$RELEASE-DATE_AND_SUFFIX origin/main
