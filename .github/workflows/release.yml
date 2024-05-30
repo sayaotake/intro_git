@@ -30,5 +30,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: create_release-branch
-        run: git checkout -b $RELEASE_BRANCH_NAME
+        run: git branch $RELEASE_BRANCH_NAME
+          git checkout $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
