@@ -37,5 +37,9 @@ jobs:
 
       - name: add_release-branch
         run: git add $RELEASE_BRANCH_NAME
-          git commit $RELEASE_BRANCH_NAME
-          git push origin $RELEASE_BRANCH_NAME
+
+      - name: commit_release-branch
+        run: git commit $RELEASE_BRANCH_NAME
+
+      - name: push_release-branch
+        run: git push origin $RELEASE_BRANCH_NAME
