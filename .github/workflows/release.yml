@@ -27,7 +27,7 @@ jobs:
     env:
       RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@origin
 
       - name: create_release-branch
         run: git branch $RELEASE_BRANCH_NAME
