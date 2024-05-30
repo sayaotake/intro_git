@@ -11,7 +11,7 @@ jobs:
   release-date_and_suffix:
     runs-on: ubuntu-latest
     env:
-      RELEASE-DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
+      $RELEASE-DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
     steps:
       - name: release_date_and_suffix
         run: echo "入力値は$RELEASE-DATE_AND_SUFFIX"
@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: create_release-branch
         env:
-          RELEASE-DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
+          $RELEASE-DATE_AND_SUFFIX: ${{ github.event.inputs.date }}
         run: git branch release/$RELEASE-DATE_AND_SUFFIX
 
       - name: create_release-branch
