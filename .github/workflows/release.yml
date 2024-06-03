@@ -9,9 +9,9 @@ on:
 
 jobs:
   release-date_and_suffix:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     env:
-      RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - name: release_date_and_suffix
         run: echo "入力値は$RELEASE_BRANCH_NAME"
@@ -23,17 +23,14 @@ jobs:
         run: echo "Helloworld!2"
 
   release-branch:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     env:
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - uses: actions/checkout@v4
 
       - name: create_release-branch
-        run: git branch $RELEASE_BRANCH_NAME origin/master
-
-      - name: checkout_release-branch
-        run: git checkout $RELEASE_BRANCH_NAME
-
-      - name: push_release-branch
-        run: git push origin $RELEASE_BRANCH_NAME
+        run: |
+          git branch $RELEASE_BRANCH_NAME origin/master
+          git checkout $RELEASE_BRANCH_NAME
+          git push origin $RELEASE_BRANCH_NAME
