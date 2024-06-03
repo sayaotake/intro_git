@@ -15,15 +15,23 @@ jobs:
   release-date_and_suffix:
     runs-on: ubuntu-latest
     env:
+      RELEASE_DATE: ${{ github.event.inputs.date }}
+      SUFFIX: ${{github.event.inputs.suffix}}
       RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
     steps:
       - name: release_date_and_suffix
         run: |
           echo "入力値は$RELEASE_BRANCH_NAME"
-          if ! [[ "$RELEASE_BRANCH_NAME" =~ ^release-[0-9]{8}[a-z]$ ]]; then
+          if ! [[ "$RELEASE_DATE" =~ [0-9]{8}$ ]]; then
               echo "起動を終了します"
               exit 1
           fi
+
+          if ! [[ "$SUFFIX" =~ [a-z]$ ]]; then
+              echo "起動を終了します"
+              exit 1
+          fi
+
           echo "releaseブランチを作成します"
 
   release-branch:
