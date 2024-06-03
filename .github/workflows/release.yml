@@ -34,3 +34,15 @@ jobs:
           git branch $RELEASE_BRANCH_NAME origin/master
           git checkout $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
+
+  release-settings-branch:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_SETTINGS_BRANCH_NAME: release-settings-${{ github.event.inputs.date }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: create_release-settings-branch
+        run: |
+          git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
+          git checkout $RELEASE_SETTINGS_BRANCH_NAME
