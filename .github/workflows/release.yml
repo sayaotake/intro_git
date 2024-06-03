@@ -16,10 +16,11 @@ jobs:
       - name: release_date_and_suffix
         run: |
           echo "入力値は$RELEASE_BRANCH_NAME"
-          if ["$RELEASE_BRANCH_NAME" != "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][abcdefghijklmn]"]; then
+          if ! [[ "$RELEASE_BRANCH_NAME" =~ ^release-[0-9]{8}[a-z]$ ]]; then
               echo "起動を終了します"
               exit 1
           fi
+          echo "releaseブランチを作成します"
 
   release-branch:
     runs-on: ubuntu-latest
