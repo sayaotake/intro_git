@@ -31,7 +31,6 @@ jobs:
 
       - name: create_release-branch
         run: |
-          #git pull origin masterを追加
           git pull origin master
           git branch $RELEASE_BRANCH_NAME origin/master
           git checkout $RELEASE_BRANCH_NAME
@@ -50,3 +49,17 @@ jobs:
           git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
           git checkout $RELEASE_SETTINGS_BRANCH_NAME
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
+
+  create_pull-request:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.AUTO_DFP_TOKEN }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: create_pull-request
+        run: |
+          PULL_REQUEST_URI=$(gh pr create -B $RELEASE_BRANCH_NAME -t "プルリクエスト作成" -b "")
+          echo "::set-output name=PULL_REQUEST_URI::$PULL_REQUEST_URI"
