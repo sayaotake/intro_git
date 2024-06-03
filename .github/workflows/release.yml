@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
-
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -62,4 +62,4 @@ jobs:
       - name: create_pull-request
         run: |
           PULL_REQUEST_URI=$(gh pr create -B $RELEASE_BRANCH_NAME -t "プルリクエスト作成" -b "")
-          echo "::set-output name=PULL_REQUEST_URI::$PULL_REQUEST_URI"
+          echo "PULL_REQUEST_URI=$PULL_REQUEST_URI"
