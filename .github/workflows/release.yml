@@ -9,7 +9,7 @@ on:
 
 jobs:
   release-date_and_suffix:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     env:
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
@@ -23,7 +23,7 @@ jobs:
         run: echo "Helloworld!2"
 
   release-branch:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     env:
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
