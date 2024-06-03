@@ -17,7 +17,7 @@ jobs:
     env:
       RELEASE_DATE: ${{ github.event.inputs.date }}
       SUFFIX: ${{github.event.inputs.suffix}}
-      RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
     steps:
       - name: release_date_and_suffix
         run: |
@@ -37,7 +37,7 @@ jobs:
   release-branch:
     runs-on: ubuntu-latest
     env:
-      RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
     steps:
       - uses: actions/checkout@v4
 
@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
-      RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
     steps:
       - name: checkout
         uses: actions/checkout@v4
