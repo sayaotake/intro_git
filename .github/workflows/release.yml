@@ -30,10 +30,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: create_release-branch
-        run: git branch $RELEASE_BRANCH_NAME origin/master
-
-      - name: checkout_release-branch
-        run: git checkout $RELEASE_BRANCH_NAME
-
-      - name: push_release-branch
-        run: git push origin $RELEASE_BRANCH_NAME
+        run: |
+          git branch $RELEASE_BRANCH_NAME origin/master
+          git checkout $RELEASE_BRANCH_NAME
+          git push origin $RELEASE_BRANCH_NAME
