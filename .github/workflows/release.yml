@@ -53,7 +53,7 @@ jobs:
   create_pull-request:
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ secrets.AUTO_DFP_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: checkout
