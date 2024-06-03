@@ -5,13 +5,15 @@ on:
       date:
         description: "リリース日とサフィックスを入力"
         required: true
-        default: "20240530a"
+        default: "20240530"
+      suffix:
+        default: "a"
 
 jobs:
   release-date_and_suffix:
     runs-on: ubuntu-latest
     env:
-      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
+      RELEASE_BRANCH_NAME: release/${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
     steps:
       - name: release_date_and_suffix
         run: |
@@ -25,7 +27,7 @@ jobs:
   release-branch:
     runs-on: ubuntu-latest
     env:
-      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,7 +41,7 @@ jobs:
   release-settings-branch:
     runs-on: ubuntu-latest
     env:
-      RELEASE_SETTINGS_BRANCH_NAME: release-settings-${{ github.event.inputs.date }}
+      RELEASE_SETTINGS_BRANCH_NAME: release-settings-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
     steps:
       - uses: actions/checkout@v4
 
@@ -54,12 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
-      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
     steps:
       - name: checkout
         uses: actions/checkout@v4
-
-      - name: create_pull-request
-        run: |
-          PULL_REQUEST_URI=$(gh pr create -B $RELEASE_BRANCH_NAME -t "プルリクエスト作成" -b "")
-          echo "PULL_REQUEST_URI=$PULL_REQUEST_URI"
