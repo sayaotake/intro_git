@@ -47,3 +47,4 @@ jobs:
           git pull origin master
           git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
           git checkout $RELEASE_SETTINGS_BRANCH_NAME
+          git push origin $RELEASE_SETTINGS_BRANCH_NAME
