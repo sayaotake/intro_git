@@ -3,10 +3,12 @@ on:
   workflow_dispatch:
     inputs:
       date:
-        description: "リリース日とサフィックスを入力"
+        description: "リリース日を入力"
         required: true
         default: "20240530"
       suffix:
+        description: "サフィックスを入力"
+        required: true
         default: "a"
 
 jobs:
