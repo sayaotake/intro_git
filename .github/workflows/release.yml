@@ -21,6 +21,7 @@ jobs:
     steps:
       - name: release_date_and_suffix
         run: |
+          echo "ワークフローを実行しているOSは${{ runner.os }}
           echo "ブランチ名は$RELEASE_BRANCH_NAME"
           if ! [[ "$RELEASE_DATE" =~ ^[0-9]{8}$ ]]; then
               echo "起動を終了します"
