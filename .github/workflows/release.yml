@@ -62,7 +62,7 @@ jobs:
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
       - name: replace_file_parameters
-        run: sed s/20240401a/00000000b/ .github/intro.txt
+        run: sed s/20240401a/00000000b/ intro.txt
 
   create_pull-request:
     needs: release-settings-branch
