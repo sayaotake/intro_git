@@ -77,7 +77,5 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add .github/workflows/release.yml
-          git commit .github/workflows/release.yml -m "release.ymlファイル編集"
           PULL_REQUEST_URI=$(gh pr create -B $RELEASE_BRANCH_NAME -t "プルリクエスト作成" -b "")
           echo "PULL_REQUEST_URI=$PULL_REQUEST_URI" >> $GITHUB_ENV
