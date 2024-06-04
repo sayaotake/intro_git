@@ -12,16 +12,16 @@ on:
         default: "a"
 
 jobs:
-  release-date_and_suffix:
+  validate_release-date_and_suffix:
     runs-on: ubuntu-latest
     env:
       RELEASE_DATE: ${{ github.event.inputs.date }}
       SUFFIX: ${{github.event.inputs.suffix}}
-      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - name: release_date_and_suffix
         run: |
-          echo "入力値は$RELEASE_BRANCH_NAME"
+          echo "ブランチ名は$RELEASE_BRANCH_NAME"
           if ! [[ "$RELEASE_DATE" =~ ^[0-9]{8}$ ]]; then
               echo "起動を終了します"
               exit 1
@@ -35,9 +35,10 @@ jobs:
           echo "releaseブランチを作成します"
 
   release-branch:
+    needs: validate_release-date_and_suffix
     runs-on: ubuntu-latest
     env:
-      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - uses: actions/checkout@v4
 
@@ -49,9 +50,10 @@ jobs:
           git push origin $RELEASE_BRANCH_NAME
 
   release-settings-branch:
+    needs: release-branch
     runs-on: ubuntu-latest
     env:
-      RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
+      RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
     steps:
       - uses: actions/checkout@v4
 
@@ -63,10 +65,11 @@ jobs:
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
   create_pull-request:
+    needs: release-settings-branch
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
-      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}${{github.event.inputs.suffix}}
+      RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - name: checkout
         uses: actions/checkout@v4
