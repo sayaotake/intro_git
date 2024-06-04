@@ -59,10 +59,15 @@ jobs:
           git pull origin master
           git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
           git checkout $RELEASE_SETTINGS_BRANCH_NAME
-          git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
       - name: replace_file_parameters
-        run: sed s/20240401a/00000000b/ intro.txt
+        run: |
+          sed s/20240401a/00000000b/ intro.txt
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add intro.git
+          git commit -m "ファイル更新"
+          git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
   create_pull-request:
     needs: release-settings-branch
