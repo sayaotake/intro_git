@@ -60,6 +60,10 @@ jobs:
           git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
           git checkout $RELEASE_SETTINGS_BRANCH_NAME
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
+
+      - name: replace_file_parameters
+        run: sed s/20240401a/00000000b/ .github/workflows/release.yml
+
   create_pull-request:
     needs: release-settings-branch
     runs-on: ubuntu-latest
