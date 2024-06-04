@@ -65,7 +65,7 @@ jobs:
           sed s/20240401a/00000000b/ intro.txt
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add intro.git
+          git add intro.txt
           git commit -m "ファイル更新"
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
