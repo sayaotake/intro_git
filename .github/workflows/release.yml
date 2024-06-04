@@ -5,7 +5,7 @@ on:
       date:
         description: "リリース日を入力"
         required: true
-        default: "20240401"
+        default: "20240530"
       suffix:
         description: "サフィックスを入力"
         required: true
@@ -26,14 +26,11 @@ jobs:
               echo "起動を終了します"
               exit 1
           fi
-
           if ! [[ "$SUFFIX" =~ ^[a-z]$ ]]; then
               echo "起動を終了します"
               exit 1
           fi
-
           echo "releaseブランチを作成します"
-
   release-branch:
     needs: validate_release-date_and_suffix
     runs-on: ubuntu-latest
@@ -48,7 +45,6 @@ jobs:
           git branch $RELEASE_BRANCH_NAME origin/master
           git checkout $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
-
   release-settings-branch:
     needs: release-branch
     runs-on: ubuntu-latest
@@ -59,29 +55,16 @@ jobs:
 
       - name: create_release-settings-branch
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
           git pull origin master
           git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
           git checkout $RELEASE_SETTINGS_BRANCH_NAME
-          echo "This is the release settings branch" > SETTINGS.md
-          git add SETTINGS.md
-          git commit -m "Create release settings branch"
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
-
   create_pull-request:
     needs: release-settings-branch
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - name: checkout
         uses: actions/checkout@v4
-
-      - name: create_pull-request
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          PULL_REQUEST_URI=$(gh pr create -B "$RELEASE_BRANCH_NAME" -H "$RELEASE_SETTINGS_BRANCH_NAME" -t "プルリクエスト作成" -b "")
-          echo "PULL_REQUEST_URI=$PULL_REQUEST_URI" >> $GITHUB_ENV
