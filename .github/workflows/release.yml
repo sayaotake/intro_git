@@ -62,6 +62,10 @@ jobs:
           git pull origin master
           git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
           git checkout $RELEASE_SETTINGS_BRANCH_NAME
+          echo "This is the release settings branch" > SETTINGS.md
+          git add SETTINGS.md
+          git commit -m "Create release settings branch"
+          git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
   create_pull-request:
     needs: release-settings-branch
