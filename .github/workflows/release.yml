@@ -76,6 +76,5 @@ jobs:
 
       - name: create_pull-request
         run: |
-          gh auth login --with-token <<< "${{ secrets.GH_TOKEN }}"
           PULL_REQUEST_URI=$(gh pr create -B $RELEASE_BRANCH_NAME -t "プルリクエスト作成" -b "")
           echo "PULL_REQUEST_URI=$PULL_REQUEST_URI" >> $GITHUB_ENV
