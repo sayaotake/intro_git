@@ -6,4 +6,4 @@ git rm
 git status
 git diff
 
-version.script = 20240501a
+version.script = 20240606a
