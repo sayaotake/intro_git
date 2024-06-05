@@ -79,3 +79,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+
+      - name: create_pull-request
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          PULL_REQUEST_URI=$(gh pr create -B "$RELEASE_BRANCH_NAME" -H "$RELEASE_SETTINGS_BRANCH_NAME" -t "プルリクエスト作成" -b "")
+          echo "PULL_REQUEST_URI=$PULL_REQUEST_URI" >> $GITHUB_ENV
