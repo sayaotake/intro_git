@@ -61,14 +61,6 @@ jobs:
           git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
           git checkout $RELEASE_SETTINGS_BRANCH_NAME
 
-      - name: list_files
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Files in current directory:"
-          ls -la
-          echo "Files in parent directory:"
-          ls -la ../
-
       - name: replace_file_parameters
         run: |
           sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" intro.txt
