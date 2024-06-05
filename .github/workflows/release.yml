@@ -63,7 +63,7 @@ jobs:
 
       - name: replace_file_parameters
         run: |
-          cat intro_git/intro.txt
+          cat intro.txt
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
