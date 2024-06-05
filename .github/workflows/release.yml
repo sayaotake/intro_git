@@ -63,7 +63,7 @@ jobs:
 
       - name: replace_file_parameters
         run: |
-          sed -E -i "" "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" intro.txt
+          sed -E -i '' 's/[0-9]{8}[a-z]$/$PARAMETER_NAME/' intro.txt
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add intro_git/intro.txt
           git commit -m "Update intro.txt with ${PARAMETER_NAME}"
