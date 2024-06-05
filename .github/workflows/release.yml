@@ -63,7 +63,7 @@ jobs:
 
       - name: replace_file_parameters
         run: |
-          sed -E -i '' "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" intro.txt
+          sed -i '' "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" intro.txt
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
