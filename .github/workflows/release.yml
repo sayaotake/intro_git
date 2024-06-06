@@ -32,6 +32,7 @@ jobs:
               exit 1
           fi
           echo "releaseブランチを作成します"
+
   release-branch:
     needs: validate_release-date_and_suffix
     runs-on: ubuntu-latest
@@ -42,10 +43,10 @@ jobs:
 
       - name: create_release-branch
         run: |
-          git pull origin master
           git branch $RELEASE_BRANCH_NAME origin/master
           git checkout $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
+
   release-settings-branch:
     needs: release-branch
     runs-on: ubuntu-latest
