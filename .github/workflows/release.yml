@@ -43,8 +43,9 @@ jobs:
 
       - name: create_release-branch
         run: |
-          git branch $RELEASE_BRANCH_NAME origin/master
-          git checkout $RELEASE_BRANCH_NAME
+          git checkout master
+          git pull origin master
+          git checkout -b $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
 
   release-settings-branch:
@@ -58,11 +59,11 @@ jobs:
 
       - name: create_release-settings-branch
         run: |
-          git pull origin master
-          git branch $RELEASE_SETTINGS_BRANCH_NAME origin/master
-          git checkout $RELEASE_SETTINGS_BRANCH_NAME
+          git checkout ${{ env.RELEASE_BRANCH_NAME }}
+          git checkout -b $RELEASE_SETTINGS_BRANCH_NAME
+          git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
-      - name: replace_file_parameters
+      - name: replace_file_parameters_and_commit
         run: |
           sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" intro.txt
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -77,13 +78,10 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
+      RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: create_pull-request
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          PULL_REQUEST_URI=$(gh pr create -B "$RELEASE_BRANCH_NAME" -H "$RELEASE_SETTINGS_BRANCH_NAME" -t "プルリクエスト作成" -b "")
-          echo "PULL_REQUEST_URI=$PULL_REQUEST_URI" >> $GITHUB_ENV
+          gh pr create -B "$RELEASE_BRANCH_NAME" -H "$RELEASE_SETTINGS_BRANCH_NAME" -t "リリース設定のプルリクエスト: $RELEASE_SETTINGS_BRANCH_NAME" -b "このプルリクエストは${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}への変更を提案します。"
