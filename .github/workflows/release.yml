@@ -84,5 +84,5 @@ jobs:
         with:
           commit-message: "リリース設定ブランチのプルリクエスト: ${{ env.RELEASE_SETTINGS_BRANCH_NAME }}"
           title: "${{ env.RELEASE_SETTINGS_BRANCH_NAME }}から${{ env.RELEASE_BRANCH_NAME }}へのプルリクエスト"
-          base: ${{ env.RELEASE_SETTINGS_BRANCH_NAME }}
-          branch: ${{ env.RELEASE_BRANCH_NAME }}
+          base: ${{ env.RELEASE_BRANCH_NAME }}
+          branch: ${{ env.RELEASE_SETTINGS_BRANCH_NAME }}
