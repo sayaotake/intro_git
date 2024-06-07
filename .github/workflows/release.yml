@@ -43,8 +43,6 @@ jobs:
 
       - name: create_release-branch
         run: |
-          git checkout master
-          git pull origin master
           git checkout -b $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
 
