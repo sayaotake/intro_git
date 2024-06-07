@@ -80,7 +80,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: create_pull-request
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          gh pr create -B "$RELEASE_BRANCH_NAME" -H "$RELEASE_SETTINGS_BRANCH_NAME" -t "リリース設定のプルリクエスト: $RELEASE_SETTINGS_BRANCH_NAME" -b "このプルリクエストは${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}への変更を提案します。"
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "リリース設定ブランチのプルリクエスト: $RELEASE_SETTINGS_BRANCH_NAME"
+          title: "${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}へのプルリクエスト"
+          base: $RELEASE_BRANCH_NAME
+          branch: $RELEASE_SETTINGS_BRANCH_NAME
