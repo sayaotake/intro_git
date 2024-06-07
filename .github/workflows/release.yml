@@ -82,7 +82,7 @@ jobs:
       - name: create_pull-request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: "リリース設定ブランチのプルリクエスト: $RELEASE_SETTINGS_BRANCH_NAME"
-          title: "${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}へのプルリクエスト"
-          base: $RELEASE_BRANCH_NAME
-          branch: $RELEASE_SETTINGS_BRANCH_NAME
+          commit-message: "リリース設定ブランチのプルリクエスト: ${{ env.RELEASE_SETTINGS_BRANCH_NAME }}"
+          title: "${{ env.RELEASE_SETTINGS_BRANCH_NAME }}から${{ env.RELEASE_BRANCH_NAME }}へのプルリクエスト"
+          base: ${{ env.RELEASE_BRANCH_NAME }}
+          branch: ${{ env.RELEASE_SETTINGS_BRANCH_NAME }}
