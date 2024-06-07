@@ -32,7 +32,6 @@ jobs:
               exit 1
           fi
           echo "releaseブランチを作成します"
-
   release-branch:
     needs: validate_release-date_and_suffix
     runs-on: ubuntu-latest
@@ -45,7 +44,6 @@ jobs:
         run: |
           git checkout -b $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
-
   release-settings-branch:
     needs: release-branch
     runs-on: ubuntu-latest
@@ -60,7 +58,6 @@ jobs:
           git checkout ${{ env.RELEASE_BRANCH_NAME }}
           git checkout -b $RELEASE_SETTINGS_BRANCH_NAME
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
-
       - name: replace_file_parameters_and_commit
         run: |
           sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" intro.txt
@@ -69,7 +66,6 @@ jobs:
           git add intro.txt
           git commit -m "Update intro.txt with ${PARAMETER_NAME}"
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
-
   create_pull-request:
     needs: release-settings-branch
     runs-on: ubuntu-latest
@@ -84,5 +80,5 @@ jobs:
         with:
           commit-message: "リリース設定ブランチのプルリクエスト: ${{ env.RELEASE_SETTINGS_BRANCH_NAME }}"
           title: "${{ env.RELEASE_SETTINGS_BRANCH_NAME }}から${{ env.RELEASE_BRANCH_NAME }}へのプルリクエスト"
-          base: ${{ env.RELEASE_BRANCH_NAME }}
-          branch: ${{ env.RELEASE_SETTINGS_BRANCH_NAME }}
+          base: ${{ env.RELEASE_SETTINGS_BRANCH_NAME }}
+          branch: ${{ env.RELEASE_BRANCH_NAME }}
