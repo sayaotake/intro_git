@@ -73,6 +73,7 @@ jobs:
     needs: release-settings-branch
     runs-on: ubuntu-latest
     env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
       RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
     steps:
