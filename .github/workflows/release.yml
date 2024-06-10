@@ -72,6 +72,8 @@ jobs:
   create_pull-request:
     needs: release-settings-branch
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
