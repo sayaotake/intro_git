@@ -73,7 +73,6 @@ jobs:
     needs: release-settings-branch
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
       RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
     steps:
@@ -81,6 +80,5 @@ jobs:
 
       - name: create_pull-request
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
           gh pr create -B "$RELEASE_BRANCH_NAME" -H "$RELEASE_SETTINGS_BRANCH_NAME" -t "リリース設定のプルリクエスト: $RELEASE_SETTINGS_BRANCH_NAME" -b "このプルリクエストは${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}への変更を提案します。"
