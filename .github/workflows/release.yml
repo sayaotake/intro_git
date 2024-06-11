@@ -19,6 +19,14 @@ jobs:
       SUFFIX: ${{ github.event.inputs.suffix }}
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
+      - name: Set up GitHub CLI
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
       - name: release_date_and_suffix
         run: |
           echo "ワークフローを実行しているOSは${{ runner.os }}"
@@ -29,6 +37,10 @@ jobs:
           fi
           if ! [[ "$SUFFIX" =~ ^[a-z]$ ]]; then
               echo "起動を終了します"
+              exit 1
+          fi
+          if gh api repos/${{ github.repository }}/branches | jq -r '.[].name' | grep -q "^release-$RELEASE_DATE$"; then
+              echo "同じ日付のリリースブランチが既に存在します。起動を終了します。"
               exit 1
           fi
           echo "releaseブランチを作成します"
