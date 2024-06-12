@@ -24,7 +24,7 @@ jobs:
           echo "ワークフローを実行しているOSは${{ runner.os }}"
           echo "ブランチ名は$RELEASE_BRANCH_NAME"
 
-          git ls-remote --heads origin | grep -q "refs/heads/$RELEASE_BRANCH_NAME"
+          git ls-remote | grep -q "refs/heads/$RELEASE_BRANCH_NAME"
           if [ $? -eq 0 ]; then  
              echo "Error: ブランチ $RELEASE_BRANCH_NAME は既に存在します。"
              exit 1
