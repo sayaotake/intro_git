@@ -72,12 +72,15 @@ jobs:
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
       - name: replace_file_parameters_and_commit
         run: |
-          sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" intro.txt
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add intro.txt
-          git commit -m "Update intro.txt with ${PARAMETER_NAME}"
-          git push origin $RELEASE_SETTINGS_BRANCH_NAME
+          for file_name in "intro.txt, second.txt"
+          do
+            sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" $file_name
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "github-actions[bot]"
+            git add $file_name
+            git commit -m "Update intro.txt with ${PARAMETER_NAME}"
+            git push origin $RELEASE_SETTINGS_BRANCH_NAME
+          done
 
   create_pull-request:
     needs: release-settings-branch
