@@ -3,11 +3,11 @@ on:
   workflow_dispatch:
     inputs:
       date:
-        description: "リリース日を入力"
+        description: "リリース日を数字8桁で入力（例:20240614）"
         required: true
 
       suffix:
-        description: "サフィックスを入力"
+        description: "サフィックスを小文字で入力（例:a）"
         required: true
 
 jobs:
@@ -76,6 +76,8 @@ jobs:
         run: |
           for file_name in intro.txt second.txt; do
             sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER}/" files/$file_name
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "github-actions[bot]"
             git add files/$file_name
             git commit -m "【リリース作業】CDN設定ファイル バージョン更新"
             #あとで消去↓
