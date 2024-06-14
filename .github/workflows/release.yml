@@ -5,11 +5,10 @@ on:
       date:
         description: "リリース日を入力"
         required: true
-        default: "20240501"
+
       suffix:
         description: "サフィックスを入力"
         required: true
-        default: "a"
 
 jobs:
   validate_release-date_and_suffix:
@@ -20,30 +19,31 @@ jobs:
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
     steps:
       - uses: actions/checkout@v4
-      - name: release_date_and_suffix
+      - name: validate_branch_name
         run: |
           echo "ワークフローを実行しているOSは${{ runner.os }}"
           echo "ブランチ名は$RELEASE_BRANCH_NAME"
 
           BRANCH_EXISTS=$(git ls-remote --heads origin | grep -q "refs/heads/$RELEASE_BRANCH_NAME"; echo $?)
           if [ $BRANCH_EXISTS -eq 0 ]; then  
-              echo "Error: ブランチ $RELEASE_BRANCH_NAME は既に存在します。"
-              exit 1
+          echo "Error: ブランチ $RELEASE_BRANCH_NAME は既に存在します。"
+          exit 1
           fi
-
+      - name: validate_release-date
+        run: |
           if ! [[ "$RELEASE_DATE" =~ ^[0-9]{8}$ ]]; then
               echo "起動を終了します"
               exit 1
           fi
-
+      - name: validate_suffix
+        run: |
           if ! [[ "$SUFFIX" =~ ^[a-z]$ ]]; then
               echo "起動を終了します"
               exit 1
           fi
-
           echo "releaseブランチを作成します"
 
-  release-branch:
+  create_release-branch:
     needs: validate_release-date_and_suffix
     runs-on: ubuntu-latest
     env:
@@ -56,33 +56,34 @@ jobs:
           git checkout -b $RELEASE_BRANCH_NAME
           git push origin $RELEASE_BRANCH_NAME
 
-  release-settings-branch:
-    needs: release-branch
+  create_release-settings-branch:
+    needs: create_release-branch
     runs-on: ubuntu-latest
     env:
       RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
-      PARAMETER_NAME: ${{ github.event.inputs.date }}${{ github.event.inputs.suffix }}
+      PARAMETER: ${{ github.event.inputs.date }}${{ github.event.inputs.suffix }}
     steps:
       - uses: actions/checkout@v4
 
       - name: create_release-settings-branch
         run: |
-          git checkout ${{ env.RELEASE_BRANCH_NAME }}
-          git checkout -b $RELEASE_SETTINGS_BRANCH_NAME
-          git push origin $RELEASE_SETTINGS_BRANCH_NAME
+          #あとで消去↓
+           git checkout ${{ env.RELEASE_BRANCH_NAME }}
+           git checkout -b $RELEASE_SETTINGS_BRANCH_NAME
+          #あとで消去↓
+           git push origin $RELEASE_SETTINGS_BRANCH_NAME
       - name: replace_file_parameters_and_commit
         run: |
           for file_name in intro.txt second.txt; do
-            sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER_NAME}/" files/$file_name
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git config --global user.name "github-actions[bot]"
+            sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER}/" files/$file_name
             git add files/$file_name
-            git commit -m "Update intro.txt with ${PARAMETER_NAME}"
+            git commit -m "【リリース作業】CDN設定ファイル バージョン更新"
+            #あとで消去↓
             git push origin $RELEASE_SETTINGS_BRANCH_NAME
           done
 
   create_pull-request:
-    needs: release-settings-branch
+    needs: create_release-settings-branch
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -90,6 +91,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       RELEASE_BRANCH_NAME: release-${{ github.event.inputs.date }}
       RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
+      REVIEWER: ${{ github.actor }}
     steps:
       - uses: actions/checkout@v4
 
@@ -97,4 +99,4 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          gh pr create -B "$RELEASE_BRANCH_NAME" -H "$RELEASE_SETTINGS_BRANCH_NAME" -t "リリース設定のプルリクエスト: $RELEASE_SETTINGS_BRANCH_NAME" -b "このプルリクエストは${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}への変更を提案します。"
+          gh pr create -B "$RELEASE_BRANCH_NAME" -H "$RELEASE_SETTINGS_BRANCH_NAME" -t "【リリース作業】CDN設定ファイル バージョン更新" -b "このプルリクエストは${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}への変更を提案します。" -r $REVIEWER
