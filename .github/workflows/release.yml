@@ -66,12 +66,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: create_release-settings-branch
-        run: |
-          #あとで消去↓
-           git checkout ${{ env.RELEASE_BRANCH_NAME }}
-           git checkout -b $RELEASE_SETTINGS_BRANCH_NAME
-          #あとで消去↓
-           git push origin $RELEASE_SETTINGS_BRANCH_NAME
+        run: git checkout -b $RELEASE_SETTINGS_BRANCH_NAME
+
       - name: replace_file_parameters_and_commit
         run: |
           for file_name in intro.txt second.txt; do
