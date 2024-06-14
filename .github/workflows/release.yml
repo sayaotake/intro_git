@@ -76,9 +76,8 @@ jobs:
             git config --global user.name "github-actions[bot]"
             git add files/$file_name
             git commit -m "【リリース作業】CDN設定ファイル バージョン更新"
-            #あとで消去↓
-            git push origin $RELEASE_SETTINGS_BRANCH_NAME
           done
+          git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
   create_pull-request:
     needs: create_release-settings-branch
