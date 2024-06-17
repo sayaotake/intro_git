@@ -73,9 +73,10 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          for file_name in files/${{ env.FILE_PASS }} ; do
-              sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER}/" $file_name
-              git add $file_name
+          for file_name in $FILE_PASS ; do
+              echo files/$file_name
+              sed -E -i "s/[0-9]{8}[a-z]$/${PARAMETER}/" files/$file_name
+              git add files/$file_name
               git commit -m "【リリース作業】CDN設定ファイル バージョン更新"
           done
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
