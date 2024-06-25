@@ -74,6 +74,7 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
+
           for dodaWebEnv in $dodaWebEnvArray ; do
               echo files/$dodaWebEnv
               sed -E -i "s/version_script=[0-9]{8}[a-z]$/version_script=${PARAMETER}/" files/$dodaWebEnv
@@ -82,7 +83,12 @@ jobs:
               git add files/$dodaWebEnv
           done
 
-          for javafrontEnv in $envArrayJavaFront ; do
+            sed -E -i "s/version_script=[0-9]{8}[a-z]$/version_script=${PARAMETER}/" DodaLibrary/src/main/resources/const.properties
+            sed -E -i "s/version_css=[0-9]{8}[a-z]$/version_css=${PARAMETER}/" DodaLibrary/src/main/resources/const.properties
+            sed -E -i "s/version_img=[0-9]{8}[a-z]$/version_img=${PARAMETER}/" DodaLibrary/src/main/resources/const.properties
+            git add DodaLibrary/src/main/resources/const.properties
+
+            for javafrontEnv in $envArrayJavaFront ; do
               echo files/$dodaWebEnv
               sed -E -i "s/version_script=[0-9]{8}[a-z]$/version_script=${PARAMETER}/" Doda-javafront-env/$javafrontEnv/deployment/common.properties
               sed -E -i "s/version_css=[0-9]{8}[a-z]$/version_css=${PARAMETER}/" Doda-javafront-env/$javafrontEnv/deployment/common.properties
