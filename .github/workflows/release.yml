@@ -74,11 +74,11 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           for file_name in $FILE_PASS ; do
-              echo $file_name
-              sed -E -i "s/version_script=[0-9]{8}[a-z]$/version_script=${PARAMETER}/" $file_name
-              sed -E -i "s/version_css=[0-9]{8}[a-z]$/version_css=${PARAMETER}/" $file_name
-              sed -E -i "s/version_img=[0-9]{8}[a-z]$/version_img=${PARAMETER}/" $file_name
-              git add $file_name
+              echo ../../$file_name
+              sed -E -i "s/version_script=[0-9]{8}[a-z]$/version_script=${PARAMETER}/" ../../$file_name
+              sed -E -i "s/version_css=[0-9]{8}[a-z]$/version_css=${PARAMETER}/" ../../$file_name
+              sed -E -i "s/version_img=[0-9]{8}[a-z]$/version_img=${PARAMETER}/" ../../$file_name
+              git add ../../$file_name
           done
           git commit -m "【リリース作業】CDN設定ファイル バージョン更新"
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
