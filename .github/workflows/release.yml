@@ -63,6 +63,7 @@ jobs:
       RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
       PARAMETER: ${{ github.event.inputs.date }}${{ github.event.inputs.suffix }}
       dodaWebEnvArray: intro.txt second.txt
+      envArrayJavaFront: LIVE local
     steps:
       - uses: actions/checkout@v4
 
@@ -79,6 +80,14 @@ jobs:
               sed -E -i "s/version_css=[0-9]{8}[a-z]$/version_css=${PARAMETER}/" files/$dodaWebEnv
               sed -E -i "s/version_img=[0-9]{8}[a-z]$/version_img=${PARAMETER}/" files/$dodaWebEnv
               git add files/$dodaWebEnv
+          done
+
+          for javafrontEnv in $envArrayJavaFront ; do
+              echo files/$dodaWebEnv
+              sed -E -i "s/version_script=[0-9]{8}[a-z]$/version_script=${PARAMETER}/" Doda-javafront-env/$javafrontEnv/deployment/common.properties
+              sed -E -i "s/version_css=[0-9]{8}[a-z]$/version_css=${PARAMETER}/" Doda-javafront-env/$javafrontEnv/deployment/common.properties
+              sed -E -i "s/version_img=[0-9]{8}[a-z]$/version_img=${PARAMETER}/" Doda-javafront-env/$javafrontEnv/deployment/common.properties
+              git add Doda-javafront-env/$javafrontEnv/deployment/common.properties
           done
           git commit -m "【リリース作業】CDN設定ファイル バージョン更新"
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
