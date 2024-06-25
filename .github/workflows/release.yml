@@ -109,6 +109,8 @@ jobs:
       RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
       REVIEWER: ${{ github.actor }}
     steps:
+      - uses: actions/checkout@v4
+
       - name: create_pull-request
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
