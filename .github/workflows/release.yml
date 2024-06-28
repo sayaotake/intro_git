@@ -110,16 +110,26 @@ jobs:
       RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
       REVIEWER: ${{ github.actor }}
     steps:
-      - name: create_pull-request
+      - name: checkout repository
         uses: actions/checkout@v4
-      - uses: actions/github-script@v6
+      - name: create_pull-request
+        uses: actions/github-script@v6
         with:
           script: |
-            await octokit.rest.pulls.create({
+            const { data } = await github.rest.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: "【リリース作業】CDN設定ファイル バージョン更新",
-                head: $RELEASE_SETTINGS_BRANCH_NAME,
-                base: $RELEASE_BRANCH_NAME,
-                body: "このプルリクエストは${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}への変更を提案します。"
+                head: process.env.RELEASE_SETTINGS_BRANCH_NAME,
+                base: process.env.RELEASE_BRANCH_NAME,
+                body: `このプルリクエストは${process.env.RELEASE_SETTINGS_BRANCH_NAME}から${process.env.RELEASE_BRANCH_NAME}への変更を提案します。`
+            });
+            console.log(data);
+
+            const pull_number = data.number;
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pull_number,
+              reviewers: [process.env.REVIEWER]
             });
