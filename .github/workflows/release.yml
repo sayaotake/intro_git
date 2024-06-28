@@ -115,8 +115,10 @@ jobs:
         with:
           script: |
             await octokit.rest.pulls.create({
-                title: "【リリース作業】CDN設定ファイル バージョン更新"
-                head: $RELEASE_SETTINGS_BRANCH_NAME
-                base: $RELEASE_BRANCH_NAME
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: "【リリース作業】CDN設定ファイル バージョン更新",
+                head: $RELEASE_SETTINGS_BRANCH_NAME,
+                base: $RELEASE_BRANCH_NAME,
                 body: "このプルリクエストは${RELEASE_SETTINGS_BRANCH_NAME}から${RELEASE_BRANCH_NAME}への変更を提案します。"
             });
