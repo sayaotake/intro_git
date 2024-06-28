@@ -102,6 +102,7 @@ jobs:
     needs: create_release-settings-branch
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pull-requests: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -114,7 +115,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const { data } = await github.pulls.create({
+            const { data } = await github.rest.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: "【リリース作業】CDN設定ファイル バージョン更新",
