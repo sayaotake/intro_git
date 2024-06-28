@@ -110,9 +110,10 @@ jobs:
       RELEASE_SETTINGS_BRANCH_NAME: release-settings/${{ github.event.inputs.date }}
       REVIEWER: ${{ github.actor }}
     steps:
-      - name: create_pull-request
+      - name: checkout repository
         uses: actions/checkout@v4
-      - uses: actions/github-script@v6
+      - name: create_pull-request
+        uses: actions/github-script@v6
         with:
           script: |
             const { data } = await github.rest.pulls.create({
@@ -124,3 +125,11 @@ jobs:
                 body: `このプルリクエストは${process.env.RELEASE_SETTINGS_BRANCH_NAME}から${process.env.RELEASE_BRANCH_NAME}への変更を提案します。`
             });
             console.log(data);
+
+            const pull_number = data.number;
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pull_number,
+              reviewers: [process.env.REVIEWER]
+            });
