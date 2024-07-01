@@ -123,7 +123,8 @@ jobs:
                 head: process.env.RELEASE_SETTINGS_BRANCH_NAME,
                 base: process.env.RELEASE_BRANCH_NAME,
                 body: `このプルリクエストは${process.env.RELEASE_SETTINGS_BRANCH_NAME}から${process.env.RELEASE_BRANCH_NAME}への変更を提案します。`
-            });
+                auto_merge: true
+                });
             console.log(data);
 
             const pull_number = data.number;
@@ -138,4 +139,5 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: pull_number,
-            });
+                merge_method: 'merge'
+                });
