@@ -128,8 +128,14 @@ jobs:
 
             const pull_number = data.number;
             await github.rest.pulls.requestReviewers({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: pull_number,
-              reviewers: [process.env.REVIEWER]
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pull_number,
+                reviewers: [process.env.REVIEWER]
+            });
+
+            await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pull_number,
             });
