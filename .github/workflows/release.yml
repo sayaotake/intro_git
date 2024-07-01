@@ -135,6 +135,14 @@ jobs:
                 reviewers: [process.env.REVIEWER]
             });
 
+            await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pull_number,
+                event: "APPROVE"
+            });
+
+
             await github.rest.pulls.merge({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
