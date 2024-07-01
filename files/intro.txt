@@ -6,6 +6,6 @@ git rm
 git status
 git diff
 
-version_script=12345678e
-version_css=90123456d
-version_img=78901234s
+version_script=20240824a
+version_css=20240824a
+version_img=20240824a
