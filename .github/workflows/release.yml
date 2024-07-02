@@ -123,8 +123,9 @@ jobs:
                 head: process.env.RELEASE_SETTINGS_BRANCH_NAME,
                 base: process.env.RELEASE_BRANCH_NAME,
                 body: `このプルリクエストは${process.env.RELEASE_SETTINGS_BRANCH_NAME}から${process.env.RELEASE_BRANCH_NAME}への変更を提案します。`
-                });
+            });
             console.log(data);
+
 
             const pull_number = data.number;
             await github.rest.pulls.requestReviewers({
@@ -134,17 +135,18 @@ jobs:
                 reviewers: [process.env.REVIEWER]
             });
 
-            await github.rest.pulls.createReview({
-                owner: [process.env.REVIEWER],
-                repo: context.repo.repo,
-                pull_number: pull_number,
-                event: "APPROVE"
-            });
+      - name: Auto approve
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: "${{ secrets.BOT_GITHUB_TOKEN }}"
 
-
+      - name: create_pull-request
+        uses: actions/github-script@v6
+        with:
+          script: |
             await github.rest.pulls.merge({
-                owner: [process.env.REVIEWER],
+                owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: pull_number,
                 merge_method: 'merge'
-                });
+            });
