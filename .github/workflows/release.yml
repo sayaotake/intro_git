@@ -135,7 +135,7 @@ jobs:
             });
 
             await github.rest.pulls.createReview({
-                owner: context.repo.owner,
+                owner: [process.env.REVIEWER],
                 repo: context.repo.repo,
                 pull_number: pull_number,
                 event: "APPROVE"
