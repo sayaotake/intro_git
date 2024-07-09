@@ -5,10 +5,12 @@ on:
       date:
         description: "リリース日を数字8桁で入力（例:20240614）"
         required: true
+        default: $date +"%Y%m%d"
 
       suffix:
         description: "サフィックスを小文字で入力（例:a）"
         required: true
+        default: "a"
 
 jobs:
   validate_release-date_and_suffix:
