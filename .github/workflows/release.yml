@@ -5,12 +5,10 @@ on:
       date:
         description: "リリース日を数字8桁で入力（例:20240614）"
         required: true
-        default: $(date +'%Y%m%d ')
 
       suffix:
         description: "サフィックスを小文字で入力（例:a）"
         required: true
-        default: "a"
 
 jobs:
   validate_release-date_and_suffix:
@@ -97,7 +95,7 @@ jobs:
               sed -E -i "s/version_img=[0-9]{8}[a-z]$/version_img=${PARAMETER}/" Doda-javafront-env/$javafrontEnv/deployment/common.properties
               git add Doda-javafront-env/$javafrontEnv/deployment/common.properties
           done
-          git commit -m "【リリース作業】CDN設定ファイル バージョン更新"
+          git commit -m "【リリース作業】CDN設定ファイル バージョン更新 ${{ github.event.inputs.date }}"
           git push origin $RELEASE_SETTINGS_BRANCH_NAME
 
   create_pull-request:
@@ -121,34 +119,17 @@ jobs:
             const { data } = await github.rest.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: "【リリース作業】CDN設定ファイル バージョン更新",
+                title: "【リリース作業】CDN設定ファイル バージョン更新 ${{ github.event.inputs.date }}",
                 head: process.env.RELEASE_SETTINGS_BRANCH_NAME,
                 base: process.env.RELEASE_BRANCH_NAME,
                 body: `このプルリクエストは${process.env.RELEASE_SETTINGS_BRANCH_NAME}から${process.env.RELEASE_BRANCH_NAME}への変更を提案します。`
             });
             console.log(data);
 
-
             const pull_number = data.number;
             await github.rest.pulls.requestReviewers({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pull_number,
-                reviewers: [process.env.REVIEWER]
-            });
-
-      - name: Auto approve
-        uses: hmarr/auto-approve-action@v3
-        with:
-          github-token: "${{ secrets.BOT_GITHUB_TOKEN }}"
-
-      - name: create_pull-request
-        uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.pulls.merge({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pull_number,
-                merge_method: 'merge'
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pull_number,
+              reviewers: [process.env.REVIEWER]
             });
